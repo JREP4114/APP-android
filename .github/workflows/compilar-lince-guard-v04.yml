@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'LINCE_GUARD_V0_4_ANDROID.zip'
+      - 'LINCE_GUARD_V0_4_ANDROID*.zip'
   workflow_dispatch:
 
 permissions:
@@ -22,9 +22,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -s LINCE_GUARD_V0_4_ANDROID.zip
+          ARCHIVE="$(find . -maxdepth 1 -type f -name 'LINCE_GUARD_V0_4_ANDROID*.zip' | sort | tail -1)"
+          test -n "$ARCHIVE"
+          test -s "$ARCHIVE"
+          echo "Paquete detectado: $ARCHIVE"
           mkdir -p source
-          unzip -oq LINCE_GUARD_V0_4_ANDROID.zip -d source
+          unzip -oq "$ARCHIVE" -d source
           test -s source/app/build.gradle
           test -s source/app/src/main/java/mx/uadeo/linceguard/MainActivity.java
           test -s source/app/src/main/java/mx/uadeo/linceguard/ApiClient.java
