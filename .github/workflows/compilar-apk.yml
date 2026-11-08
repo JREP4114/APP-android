@@ -55,12 +55,16 @@ jobs:
         working-directory: source
         run: bash test_scangate.sh
 
-      - name: Detectar Android SDK preinstalado
+      - name: Localizar SDK Manager de Android
         shell: bash
         run: |
+          set -euo pipefail
           echo "ANDROID_HOME=$ANDROID_HOME"
-          command -v sdkmanager
           test -d "$ANDROID_HOME"
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort -V | tail -1)"
+          test -x "$SDKMANAGER"
+          echo "$(dirname "$SDKMANAGER")" >> "$GITHUB_PATH"
+          "$SDKMANAGER" --version
 
       - name: Instalar SDK y Build Tools 35
         shell: bash
