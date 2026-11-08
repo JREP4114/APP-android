@@ -1,0 +1,74 @@
+name: LINCE GUARD - Compilar APK Android
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'LINCE_GUARD_GITHUB_ACTIONS_LISTO.zip'
+      - '.github/workflows/compilar-apk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compilar:
+    name: Crear APK de prueba
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Obtener el repositorio
+        uses: actions/checkout@v4
+
+      - name: Extraer proyecto Android
+        shell: bash
+        run: |
+          test -s LINCE_GUARD_GITHUB_ACTIONS_LISTO.zip
+          unzip -oq LINCE_GUARD_GITHUB_ACTIONS_LISTO.zip -d ./source
+          test -f source/app/build.gradle
+          test -f source/settings.gradle
+
+      - name: Preparar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Probar lógica de lectura
+        shell: bash
+        working-directory: source
+        run: bash test_scangate.sh
+
+      - name: Preparar Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Instalar Android 35
+        shell: bash
+        run: sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Preparar Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+
+      - name: Compilar APK Android
+        shell: bash
+        working-directory: source
+        run: gradle --no-daemon --stacktrace :app:assembleDebug
+
+      - name: Preparar APK descargable
+        shell: bash
+        run: |
+          test -s source/app/build/outputs/apk/debug/app-debug.apk
+          cp source/app/build/outputs/apk/debug/app-debug.apk LINCE_GUARD_V0_3_1_DEBUG.apk
+          sha256sum LINCE_GUARD_V0_3_1_DEBUG.apk > LINCE_GUARD_V0_3_1_DEBUG.sha256
+
+      - name: Publicar APK como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: LINCE_GUARD_APK_ANDROID
+          path: |
+            LINCE_GUARD_V0_3_1_DEBUG.apk
+            LINCE_GUARD_V0_3_1_DEBUG.sha256
+          if-no-files-found: error
+          retention-days: 14
