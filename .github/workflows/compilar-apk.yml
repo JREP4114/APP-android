@@ -55,8 +55,12 @@ jobs:
         working-directory: source
         run: bash test_scangate.sh
 
-      - name: Configurar Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Detectar Android SDK preinstalado
+        shell: bash
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          command -v sdkmanager
+          test -d "$ANDROID_HOME"
 
       - name: Instalar SDK y Build Tools 35
         shell: bash
