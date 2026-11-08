@@ -1,4 +1,32 @@
-# LINCE GUARD — Hackatón LinceCode 2026
+# ACCESO LINCE — Proyecto completo (Hackatón LinceCode 2026)
+
+🐆 **Proyecto web + Android, manuales de uso, memoria técnica y archivos de prueba ficticios.**
+
+## 📂 Acceder al proyecto
+
+**[Abrir ACCESO LINCE completo](acceso-lince/README.md)**
+
+| Componente | Carpeta |
+|---|---|
+| Panel web y servidor Node.js/SQLite V0.5.2 | [`acceso-lince/web/`](acceso-lince/web/) |
+| Aplicación Android ACCESO LINCE VIGILANCIA | [`acceso-lince/android/`](acceso-lince/android/) |
+| Memoria técnica y manual operativo PDF | [`acceso-lince/documentacion/`](acceso-lince/documentacion/) |
+| Archivo Excel con 100 alumnos ficticios | [`acceso-lince/ejemplos/`](acceso-lince/ejemplos/) |
+
+**Inicio rápido web:** instalar Node.js 22.13+; abrir `acceso-lince/web/`; ejecutar `INICIAR_ACCESO_LINCE.bat`; completar el alta inicial de Dirección; entrar a `http://localhost:3000`.
+
+**Android:** en [GitHub Actions](https://github.com/JREP4114/APP-android/actions) ejecutar o consultar **Compilar ACCESO LINCE VIGILANCIA desde codigo**. Descarga el APK desde los artefactos de una ejecución exitosa.
+
+### Seguridad
+Este es un prototipo académico para **datos ficticios**, no un sistema de producción. No se publican bases SQLite, usuarios ni contraseñas reales, documentos de identidad, fotos personales, claves ni tokens. Antes de operar con datos personales reales son necesarios HTTPS, autenticación reforzada, autorización institucional, medidas de privacidad y pruebas adicionales.
+
+---
+
+## Histórico de la primera aplicación de vigilancia
+
+La siguiente documentación corresponde a la primera versión Android y se conserva como referencia. **Para el proyecto actual utiliza las carpetas anteriores.**
+
+# LINCE GUARD — Primera versión Android
 
 Aplicación Android de pruebas que escanea QR y códigos de barras continuamente con CameraX + ML Kit y valida las entradas desde el servidor LINCE ACCESS.
 
